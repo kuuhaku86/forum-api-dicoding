@@ -18,6 +18,7 @@ describe('Comment entities', () => {
       content:  true,
       username: 'dicoding',
       date:     1234231,
+      like_count: 1
     };
 
     // Action & Assert
@@ -31,17 +32,18 @@ describe('Comment entities', () => {
       content:  'content-123',
       username: 'dicoding',
       date:     'date-123',
+      like_count: 1,
     };
 
     // Action
-    const addComment = new Comment(payload);
+    const comment = new Comment(payload);
 
     // Assert
-    expect(addComment).toBeInstanceOf(Comment);
-    expect(addComment.id).toEqual(payload.id);
-    expect(addComment.content).toEqual(payload.content);
-    expect(addComment.username).toEqual(payload.username);
-    expect(addComment.date).toEqual(payload.date);
+    expect(comment).toBeInstanceOf(Comment);
+    expect(comment.id).toEqual(payload.id);
+    expect(comment.content).toEqual(payload.content);
+    expect(comment.username).toEqual(payload.username);
+    expect(comment.date).toEqual(payload.date);
   });
 
   it('should create Comment entities correctly (deleted)', () => {
@@ -51,18 +53,20 @@ describe('Comment entities', () => {
       content:    'content-123',
       username:   'dicoding',
       date:       'date-123',
-      is_deleted: true
+      is_deleted: true,
+      like_count: 1,
     };
 
     // Action
-    const addComment = new Comment(payload);
+    const comment = new Comment(payload);
 
     // Assert
-    expect(addComment).toBeInstanceOf(Comment);
-    expect(addComment.id).toEqual(payload.id);
-    expect(addComment.content).toEqual("**komentar telah dihapus**");
-    expect(addComment.username).toEqual(payload.username);
-    expect(addComment.date).toEqual(payload.date);
+    expect(comment).toBeInstanceOf(Comment);
+    expect(comment.id).toEqual(payload.id);
+    expect(comment.content).toEqual("**komentar telah dihapus**");
+    expect(comment.username).toEqual(payload.username);
+    expect(comment.date).toEqual(payload.date);
+    expect(comment.likeCount).toEqual(payload.like_count);
   });
 
   it('should create Comment entity correctly and can add reply', () => {
@@ -72,6 +76,7 @@ describe('Comment entities', () => {
       username: 'user-321',
       date:     'true',
       content:  'test_content',
+      like_count: 1,
     };
 
     // Action

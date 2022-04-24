@@ -18,6 +18,7 @@ describe('Reply entities', () => {
       content:  true,
       username: 'dicoding',
       date:     1234231,
+      comment_id: 'comment-123',
     };
 
     // Action & Assert
@@ -31,6 +32,7 @@ describe('Reply entities', () => {
       content:  'content-123',
       username: 'dicoding',
       date:     'date-123',
+      comment_id: 'comment-123',
     };
 
     // Action
@@ -51,7 +53,8 @@ describe('Reply entities', () => {
       content:    'content-123',
       username:   'dicoding',
       date:       'date-123',
-      is_deleted: true
+      is_deleted: true,
+      comment_id: 'comment-123',
     };
 
     // Action

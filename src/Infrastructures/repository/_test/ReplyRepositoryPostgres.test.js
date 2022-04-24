@@ -231,7 +231,7 @@ describe('ReplyRepositoryPostgres', () => {
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
 
       // Action
-      const replies = await replyRepositoryPostgres.getReplies(commentId);
+      const replies = await replyRepositoryPostgres.getReplies([commentId]);
 
       // Assert
       expect(replies).toHaveLength(3);

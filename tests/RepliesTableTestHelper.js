@@ -9,7 +9,7 @@ const RepliesTableTestHelper = {
     content = 'Dicoding Indonesia', 
   }) {
     const query = {
-      text: 'INSERT INTO replies VALUES($1, $2, $3, CURRENT_TIMESTAMP, $4)',
+      text: 'INSERT INTO replies (id, owner, comment_id, content) VALUES($1, $2, $3, $4)',
       values: [id, owner, commentId, content],
     };
 

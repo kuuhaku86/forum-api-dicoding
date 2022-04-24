@@ -1,3 +1,4 @@
+const LikesTableTestHelper = require('../../../../tests/LikesTableTestHelper');
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
@@ -11,6 +12,7 @@ const CommentRepositoryPostgres = require('../CommentRepositoryPostgres');
 
 describe('CommentRepositoryPostgres', () => {
   afterEach(async () => {
+    await LikesTableTestHelper.cleanTable();
     await CommentsTableTestHelper.cleanTable();
     await ThreadsTableTestHelper.cleanTable();
     await UsersTableTestHelper.cleanTable();
@@ -128,8 +130,9 @@ describe('CommentRepositoryPostgres', () => {
       };
 
       await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ id: payload.threadId });
-      await CommentsTableTestHelper.addComment({ id: payload.commentId });
+      await ThreadsTableTestHelper.addThread({});
+      await CommentsTableTestHelper.addComment({});
+      await LikesTableTestHelper.addLike({});
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
@@ -145,6 +148,7 @@ describe('CommentRepositoryPostgres', () => {
       expect(comment.content).toBe(comments[0].content);
       expect(comment.date).toBe(date);
       expect(comment.username).toBe('dicoding');
+      expect(comment.likeCount).toBe(1);
       expect(comment).toBeInstanceOf(Comment);
     });
   });
@@ -216,6 +220,7 @@ describe('CommentRepositoryPostgres', () => {
       await ThreadsTableTestHelper.addThread({ id: threadId });
       for (let index = 0; index < 3; index++) {
         await CommentsTableTestHelper.addComment({ id: commentId + index });
+        await LikesTableTestHelper.addLike({ commentId: commentId + index })
       }
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
@@ -232,6 +237,7 @@ describe('CommentRepositoryPostgres', () => {
         expect(comment.id).toBe(commentId + index);
         expect(comment.content).toBe(comments[0].content);
         expect(comment.username).toBe('dicoding');
+        expect(comment.likeCount).toBe(1);
         expect(comment).toBeInstanceOf(Comment);
       }
     });
