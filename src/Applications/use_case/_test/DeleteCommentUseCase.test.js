@@ -39,8 +39,7 @@ describe('DeleteCommentUseCase', () => {
     };
 
     const mockCommentRepository = new CommentRepository();
-    mockCommentRepository.getComment = jest.fn()
-      .mockImplementation(() => Promise.reject(new NotFoundError("comment tidak ditemukan")));
+    mockCommentRepository.getComment = jest.fn(() => Promise.reject(new NotFoundError("comment tidak ditemukan")));
 
     const deleteCommentUseCase = new DeleteCommentUseCase({
       commentRepository: mockCommentRepository,
@@ -60,18 +59,17 @@ describe('DeleteCommentUseCase', () => {
       commentId:   'comment-123',
     };
     const comment = new Comment({
-      id:       "comment-123",
-      username: "username",
-      date:     "123",
-      owner:    "user-321",
-      content:  "content",
+      id:         "comment-123",
+      username:   "username",
+      date:       "123",
+      owner:      "user-321",
+      content:    "content",
+      like_count: 1
     });
 
     const mockCommentRepository = new CommentRepository();
-    mockCommentRepository.getComment = jest.fn()
-      .mockImplementation(() => Promise.resolve(comment));
-    mockCommentRepository.getOwner = jest.fn()
-      .mockImplementation(() => Promise.resolve('testt-123'));
+    mockCommentRepository.getComment = jest.fn(() => Promise.resolve(comment));
+    mockCommentRepository.getOwner = jest.fn(() => Promise.resolve('testt-123'));
 
     const deleteCommentUseCase = new DeleteCommentUseCase({
       commentRepository: mockCommentRepository,
@@ -91,20 +89,18 @@ describe('DeleteCommentUseCase', () => {
       commentId:   'comment-123',
     };
     const comment = new Comment({
-      id:       "comment-123",
-      username: "username",
-      date:     "123",
-      owner:    "user-123",
-      content:  "content",
+      id:         "comment-123",
+      username:   "username",
+      date:       "123",
+      owner:      "user-123",
+      content:    "content",
+      like_count: 1
     });
 
     const mockCommentRepository = new CommentRepository();
-    mockCommentRepository.getComment = jest.fn()
-      .mockImplementation(() => Promise.resolve(comment));
-    mockCommentRepository.getOwner = jest.fn()
-      .mockImplementation(() => Promise.resolve(useCasePayload.credentials));
-    mockCommentRepository.softDelete = jest.fn()
-      .mockImplementation(() => Promise.resolve());
+    mockCommentRepository.getComment = jest.fn(() => Promise.resolve(comment));
+    mockCommentRepository.getOwner = jest.fn(() => Promise.resolve(useCasePayload.credentials));
+    mockCommentRepository.softDelete = jest.fn(() => Promise.resolve());;
 
     const deleteCommentUseCase = new DeleteCommentUseCase({
       commentRepository: mockCommentRepository,

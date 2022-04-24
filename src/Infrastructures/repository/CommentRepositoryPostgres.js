@@ -16,7 +16,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     const id = `comment-${this._idGenerator()}`;
     const query = {
-      text: 'INSERT INTO comments VALUES($1, $2, $3, CURRENT_TIMESTAMP, $4) RETURNING id, content, owner',
+      text: 'INSERT INTO comments (id, owner, thread_id, content) VALUES($1, $2, $3, $4) RETURNING id, content, owner',
       values: [id, credentials, threadId, content],
     };
 
@@ -51,15 +51,18 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async getComment({ threadId, commentId }) {
     const query = {
-      text: `SELECT comments.id, 
-                    comments.date, 
-                    comments.content, 
+      text: `SELECT comments.id,
+                    comments.date,
                     comments.is_deleted,
-                    users.username
+                    comments.content,
+                    users.username,
+                    COUNT(likes.*) AS like_count
             FROM comments
             JOIN users ON comments.owner = users.id
+            LEFT JOIN likes ON comments.id = likes.comment_id
             WHERE comments.id = $1
             AND comments.thread_id = $2
+            GROUP BY comments.id, comments.date, comments.is_deleted, comments.content, users.username
             `,
       values: [commentId, threadId],
     };
@@ -96,14 +99,17 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async getComments(threadId) {
     const query = {
-      text: `SELECT comments.id, 
-                    comments.date, 
-                    comments.content, 
+      text: `SELECT comments.id,
+                    comments.date,
                     comments.is_deleted,
-                    users.username
+                    comments.content,
+                    users.username,
+                    COUNT(likes.*) AS like_count
             FROM comments
             JOIN users ON comments.owner = users.id
+            LEFT JOIN likes ON comments.id = likes.comment_id
             WHERE comments.thread_id = $1
+            GROUP BY comments.id, comments.date, comments.is_deleted, comments.content, users.username
             ORDER BY comments.date ASC
             `,
       values: [threadId],

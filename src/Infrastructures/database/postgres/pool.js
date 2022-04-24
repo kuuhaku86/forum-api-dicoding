@@ -9,6 +9,11 @@ const testConfig = {
   database: process.env.PGDATABASE_TEST,
 };
 
+let types = require('pg').types
+types.setTypeParser(20, function(val) {
+  return parseInt(val, 10)
+})
+
 const pool = process.env.NODE_ENV === 'test' ? new Pool(testConfig) : new Pool();
 
 module.exports = pool;

@@ -17,10 +17,11 @@ describe('AddReplyUseCase', () => {
       commentId:   'comment-123',
     };
     const comment = new Comment({
-      id:       'comment-123',
-      username: useCasePayload.credentials,
-      date:     'test-date',
-      content:  'test-content-comment'
+      id:         'comment-123',
+      username:   useCasePayload.credentials,
+      date:       'test-date',
+      content:    'test-content-comment',
+      like_count: 1
     });
     const expectedAddedReply = new AddedReply({
       id:       'reply-123',
@@ -33,10 +34,12 @@ describe('AddReplyUseCase', () => {
     const mockReplyRepository = new ReplyRepository();
 
     /** mocking needed function */
-    mockCommentRepository.getComment = jest.fn()
-      .mockImplementation(() => Promise.resolve(comment));
-    mockReplyRepository.addReply = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedAddedReply));
+    mockCommentRepository.getComment = jest.fn(() => Promise.resolve(comment));
+    mockReplyRepository.addReply = jest.fn(() => Promise.resolve(new AddedReply({
+      id:       'reply-123',
+      owner:     useCasePayload.credentials,
+      content:  'test-content'
+    })));
 
     /** creating use case instance */
     const addCommentUseCase = new AddReplyUseCase({

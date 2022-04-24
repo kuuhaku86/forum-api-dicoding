@@ -5,6 +5,7 @@ class Comment {
     this.id = payload.id;
     this.username = payload.username;
     this.date = payload.date;
+    this.likeCount = payload.like_count;
 
     if (payload.is_deleted) {
       this.content = '**komentar telah dihapus**';
@@ -16,7 +17,7 @@ class Comment {
   }
 
   _verifyPayload(payload) {
-    const { id, username, date, content} = payload;
+    const { id, username, date, content, like_count } = payload;
 
     if (!id || !username || !date || !content) {
       throw new Error('COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
@@ -25,7 +26,8 @@ class Comment {
     if (typeof id !== 'string' || 
         typeof username !== 'string' || 
         typeof date !== 'string' || 
-        typeof content !== 'string') {  
+        typeof content !== 'string' ||
+        typeof like_count !== 'number') {  
       throw new Error('COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }

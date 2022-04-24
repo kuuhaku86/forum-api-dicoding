@@ -1,4 +1,5 @@
 const pool = require('../../database/postgres/pool');
+const LikesTableTestHelper = require('../../../../tests/LikesTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const AuthenticationsTableTestHelper = require('../../../../tests/AuthenticationsTableTestHelper');
@@ -38,6 +39,7 @@ describe('/threads endpoint', () => {
   });
 
   afterEach(async () => {
+    await LikesTableTestHelper.cleanTable();
     await RepliesTableTestHelper.cleanTable();
     await CommentsTableTestHelper.cleanTable();
     await ThreadsTableTestHelper.cleanTable();
@@ -179,6 +181,10 @@ describe('/threads endpoint', () => {
           owner:    `user-123${i}` ,
           content:  `content-${i}`,
         });
+        await LikesTableTestHelper.addLike({
+          commentId,
+          owner: `user-123${i}`
+        });
 
         for (let j = 0; j < 2; j++) {
           await RepliesTableTestHelper.addReply({
@@ -214,6 +220,7 @@ describe('/threads endpoint', () => {
         expect(comment.id).toEqual(`comment-123${i}`);
         expect(comment.username).toEqual(`user_${i}`);
         expect(comment.content).toEqual(`content-${i}`);
+        expect(comment.likeCount).toEqual(1);
 
         for (let j = 0; j < 2; j++) {
           let reply = comment.replies[j];

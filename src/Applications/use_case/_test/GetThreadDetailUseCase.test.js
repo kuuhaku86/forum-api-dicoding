@@ -15,8 +15,7 @@ describe('GetThreadDetailUseCase', () => {
     };
 
     const mockThreadRepository = new ThreadRepository();
-    mockThreadRepository.getThread = jest.fn()
-      .mockImplementation(() => Promise.reject(new NotFoundError('THREAD.NOT_FOUND')));
+    mockThreadRepository.getThread = jest.fn(() => Promise.reject(new NotFoundError('THREAD.NOT_FOUND')));
 
     const getThreadDetailUseCase = new GetThreadDetailUseCase({
       threadRepository: mockThreadRepository,
@@ -38,12 +37,14 @@ describe('GetThreadDetailUseCase', () => {
       username: "username",
       date:     "123",
       content:  "content",
+      comment_id: "comment-123",
     });
     const comment = new Comment({
-      id:       "comment-123",
-      username: "username",
-      date:     "123",
-      content:  "content",
+      id:         "comment-123",
+      username:   "username",
+      date:       "123",
+      content:    "content",
+      like_count: 1
     });
     const replies = [
       reply,
@@ -63,16 +64,13 @@ describe('GetThreadDetailUseCase', () => {
       date:    'test_date',
       username:'test_username', 
     });
-    mockThreadRepository.getThread = jest.fn()
-      .mockImplementation(() => Promise.resolve(thread));
+    mockThreadRepository.getThread = jest.fn(() => Promise.resolve(thread));
     
     const mockCommentRepository = new CommentRepository();
-    mockCommentRepository.getComments = jest.fn()
-      .mockImplementation(() => Promise.resolve(comments));
+    mockCommentRepository.getComments = jest.fn(() => Promise.resolve(comments));
 
     const mockReplyRepository = new ReplyRepository();
-    mockReplyRepository.getReplies = jest.fn()
-      .mockImplementation(() => Promise.resolve(replies));
+    mockReplyRepository.getReplies = jest.fn(() => Promise.resolve(replies));
 
     const getThreadDetailUseCase = new GetThreadDetailUseCase({
       threadRepository : mockThreadRepository,

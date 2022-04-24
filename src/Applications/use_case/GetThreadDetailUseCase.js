@@ -3,10 +3,12 @@ class GetThreadDetailUseCase {
     threadRepository,
     commentRepository,
     replyRepository,
+    likeRepository
   }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._replyRepository = replyRepository;
+    this._likeRepository = likeRepository;
   }
 
   async execute(useCasePayload) {
@@ -14,13 +16,15 @@ class GetThreadDetailUseCase {
 
     const thread = await this._threadRepository.getThread(threadId);
     const comments = await this._commentRepository.getComments(threadId);
+    const commentIds = await comments.map(comment => comment.id);
+    const replies = await this._replyRepository.getReplies(commentIds);
 
     for (const i in comments) {
       const comment = comments[i];
-      const replies = await this._replyRepository.getReplies(comment.id);
-
-      for (const j in replies) {
-        const reply = replies[j];
+      const repliesForComment = await replies.filter(reply => reply.commentId === comment.id);
+      
+      for (const j in repliesForComment) {
+        const reply = repliesForComment[j];
 
         comment.addReply(reply);
       }
