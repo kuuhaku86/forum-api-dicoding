@@ -9,7 +9,7 @@ const CommentsTableTestHelper = {
     content = 'Dicoding Indonesia', 
   }) {
     const query = {
-      text: 'INSERT INTO comments VALUES($1, $2, $3, CURRENT_TIMESTAMP, $4)',
+      text: 'INSERT INTO comments (id, owner, thread_id, content) VALUES($1, $2, $3, $4)',
       values: [id, owner, threadId, content],
     };
 
