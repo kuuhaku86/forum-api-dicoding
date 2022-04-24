@@ -1,21 +1,17 @@
 /* eslint-disable camelcase */
 
+exports.shorthands = undefined;
+
 exports.up = pgm => {
-	pgm.createTable('threads', {
-    id: {
-			type: 'VARCHAR(50)',
-			primaryKey: true,
-    },
+	pgm.createTable('likes', {
     owner: {
 			type: 'VARCHAR(50)',
+			primaryKey: true,
 			notNull: true,
     },
-    title: {
+    comment_id: {
 			type: 'VARCHAR(50)',
-			notNull: true,
-    },
-    body: {
-			type: 'TEXT',
+			primaryKey: true,
 			notNull: true,
     },
     date: {
@@ -25,11 +21,21 @@ exports.up = pgm => {
     },
 	});
 
-	pgm.addConstraint('threads', 'users_fk', {
+	pgm.addConstraint('likes', 'users_fk', {
 		foreignKeys: {
 			columns: 'owner',
 			references: {
-				name: 'users',
+				name:    'users',
+				columns: 'id',
+			},
+    },
+	});
+
+	pgm.addConstraint('likes', 'comments_fk', {
+		foreignKeys: {
+			columns: 'comment_id',
+			references: {
+				name:    'comments',
 				columns: 'id',
 			},
     },
@@ -37,5 +43,5 @@ exports.up = pgm => {
 };
 
 exports.down = pgm => {
-	pgm.dropTable('threads');
+	pgm.dropTable('replies');
 };
