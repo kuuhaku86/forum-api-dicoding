@@ -9,6 +9,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [17.x]
+
     steps:
     - name: SSH and deploy app
       uses: appleboy/ssh-action@master
