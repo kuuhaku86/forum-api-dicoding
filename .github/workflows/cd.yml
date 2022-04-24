@@ -9,10 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [17.x]
-
     steps:
     - name: SSH and deploy app
       uses: appleboy/ssh-action@master
@@ -24,6 +20,7 @@ jobs:
         script: |
           cd ~/forum-api-dicoding
           git pull origin main
+          nvm use 17.8.0
           npm install
           npm run migrate up
           pm2 restart forum-api
