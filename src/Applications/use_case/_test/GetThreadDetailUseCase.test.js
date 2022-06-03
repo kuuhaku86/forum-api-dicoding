@@ -8,30 +8,12 @@ const GetThreadDetailUseCase = require('../GetThreadDetailUseCase');
 const NotFoundError = require("../../../Commons/exceptions/NotFoundError");
 
 describe('GetThreadDetailUseCase', () => {
-  it('should throw error 404 if thread not found', async () => {
-    // Arrange
-    const useCasePayload = {
-      threadId: 'thread-123',
-    };
-
-    const mockThreadRepository = new ThreadRepository();
-    mockThreadRepository.getThread = jest.fn(() => Promise.reject(new NotFoundError('THREAD.NOT_FOUND')));
-
-    const getThreadDetailUseCase = new GetThreadDetailUseCase({
-      threadRepository: mockThreadRepository,
-    });
-
-    // Action & Assert
-    await expect(getThreadDetailUseCase.execute(useCasePayload))
-      .rejects
-      .toThrowError(NotFoundError);
-  });
-
   it('should orchestrating the get thread detail action correctly', async () => {
     // Arrange
     const useCasePayload = {
       threadId: 'thread-123',
     };
+    const commentId = "comment-123";
     const reply = new Reply({
       id:       "reply-123",
       username: "username",
@@ -84,6 +66,8 @@ describe('GetThreadDetailUseCase', () => {
     // Assert
     expect(mockCommentRepository.getComments)
       .toHaveBeenCalledWith(useCasePayload.threadId);
+    expect(mockReplyRepository.getReplies)
+      .toHaveBeenCalledWith([commentId, commentId, commentId]);
     expect(threadResponse).toBeInstanceOf(Thread);
     expect(threadResponse.id).toEqual(useCasePayload.threadId);
     expect(threadResponse.title).toEqual(thread.title);

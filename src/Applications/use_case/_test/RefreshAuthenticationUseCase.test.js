@@ -49,9 +49,9 @@ describe('RefreshAuthenticationUseCase', () => {
     const accessToken = await refreshAuthenticationUseCase.execute(useCasePayload);
 
     // Assert
-    expect(mockAuthenticationTokenManager.verifyRefreshToken)
-      .toBeCalledWith(useCasePayload.refreshToken);
     expect(mockAuthenticationRepository.checkAvailabilityToken)
+      .toBeCalledWith(useCasePayload.refreshToken);
+    expect(mockAuthenticationTokenManager.verifyRefreshToken)
       .toBeCalledWith(useCasePayload.refreshToken);
     expect(mockAuthenticationTokenManager.decodePayload)
       .toBeCalledWith(useCasePayload.refreshToken);

@@ -114,13 +114,13 @@ describe('ReplyRepositoryPostgres', () => {
     });
   });
 
-  describe('getReply function', () => {
+  describe('verifyReplyAvailability function', () => {
     it('should throw error 400 when reply id or comment id or thread id invalid', async () => {
       // Arrange
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
 
       // Action and Assert
-      expect(replyRepositoryPostgres.getReply({ 
+      expect(replyRepositoryPostgres.verifyReplyAvailability({ 
         threadId:  'thread-123',
         commentId: 'comment-123',
         replyId:   'reply-123',
@@ -142,7 +142,7 @@ describe('ReplyRepositoryPostgres', () => {
       await RepliesTableTestHelper.addReply({ id: payload.replyId });
 
       // Action
-      const reply = await replyRepositoryPostgres.getReply(payload);
+      const reply = await replyRepositoryPostgres.verifyReplyAvailability(payload);
 
       // Assert
       const replies = await RepliesTableTestHelper.findReply('reply-123');

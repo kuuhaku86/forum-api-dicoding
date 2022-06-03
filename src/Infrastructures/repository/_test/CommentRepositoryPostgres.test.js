@@ -110,13 +110,13 @@ describe('CommentRepositoryPostgres', () => {
     });
   });
 
-  describe('getComment function', () => {
+  describe('verifyCommentAvailability function', () => {
     it('should throw error 400 when comment id or thread id invalid', async () => {
       // Arrange
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action and Assert
-      expect(commentRepositoryPostgres.getComment({ 
+      expect(commentRepositoryPostgres.verifyCommentAvailability({ 
         threadId:  'thread-123',
         commentId: 'comment-123',
       })).rejects.toThrow(NotFoundError);
@@ -137,7 +137,7 @@ describe('CommentRepositoryPostgres', () => {
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action
-      const comment = await commentRepositoryPostgres.getComment(payload);
+      const comment = await commentRepositoryPostgres.verifyCommentAvailability(payload);
 
       // Assert
       const comments = await CommentsTableTestHelper.findComment(payload.commentId);

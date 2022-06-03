@@ -14,6 +14,7 @@ describe('AddReplyUseCase', () => {
     const useCasePayload = {
       credentials: 'dicoding',
       content:     'test_content',
+      threadId:    'thread-123',
       commentId:   'comment-123',
     };
     const comment = new Comment({
@@ -34,7 +35,7 @@ describe('AddReplyUseCase', () => {
     const mockReplyRepository = new ReplyRepository();
 
     /** mocking needed function */
-    mockCommentRepository.getComment = jest.fn(() => Promise.resolve(comment));
+    mockCommentRepository.verifyCommentAvailability = jest.fn(() => Promise.resolve(comment));
     mockReplyRepository.addReply = jest.fn(() => Promise.resolve(new AddedReply({
       id:       'reply-123',
       owner:     useCasePayload.credentials,
@@ -52,6 +53,10 @@ describe('AddReplyUseCase', () => {
 
     // Assert
     expect(addedComment).toStrictEqual(expectedAddedReply);
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith({
+      threadId:    useCasePayload.threadId,
+      commentId:   useCasePayload.commentId,
+    });
     expect(mockReplyRepository.addReply).toBeCalledWith(new AddReply({
       credentials: useCasePayload.credentials,
       content:     useCasePayload.content,

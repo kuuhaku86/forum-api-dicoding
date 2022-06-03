@@ -39,7 +39,7 @@ describe('DeleteCommentUseCase', () => {
     };
 
     const mockCommentRepository = new CommentRepository();
-    mockCommentRepository.getComment = jest.fn(() => Promise.reject(new NotFoundError("comment tidak ditemukan")));
+    mockCommentRepository.verifyCommentAvailability = jest.fn(() => Promise.reject(new NotFoundError("comment tidak ditemukan")));
 
     const deleteCommentUseCase = new DeleteCommentUseCase({
       commentRepository: mockCommentRepository,
@@ -68,7 +68,7 @@ describe('DeleteCommentUseCase', () => {
     });
 
     const mockCommentRepository = new CommentRepository();
-    mockCommentRepository.getComment = jest.fn(() => Promise.resolve(comment));
+    mockCommentRepository.verifyCommentAvailability = jest.fn(() => Promise.resolve(comment));
     mockCommentRepository.getOwner = jest.fn(() => Promise.resolve('testt-123'));
 
     const deleteCommentUseCase = new DeleteCommentUseCase({
@@ -98,7 +98,7 @@ describe('DeleteCommentUseCase', () => {
     });
 
     const mockCommentRepository = new CommentRepository();
-    mockCommentRepository.getComment = jest.fn(() => Promise.resolve(comment));
+    mockCommentRepository.verifyCommentAvailability = jest.fn(() => Promise.resolve(comment));
     mockCommentRepository.getOwner = jest.fn(() => Promise.resolve(useCasePayload.credentials));
     mockCommentRepository.softDelete = jest.fn(() => Promise.resolve());;
 
@@ -108,7 +108,7 @@ describe('DeleteCommentUseCase', () => {
 
     // Action and Assert
     expect(deleteCommentUseCase.execute(useCasePayload)).resolves.not.toThrowError(Error);
-    expect(mockCommentRepository.getComment)
+    expect(mockCommentRepository.verifyCommentAvailability)
       .toHaveBeenCalledWith({
         threadId:    useCasePayload.threadId,
         commentId:   useCasePayload.commentId,

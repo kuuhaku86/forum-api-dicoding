@@ -24,11 +24,11 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     try {
       result = await this._pool.query(query);
+
+      return new AddedComment(result.rows[0]);
     } catch (error) {
       throw new InvariantError(error.message);
     }
-
-    return new AddedComment({ ...result.rows[0] });
   }
 
   async getOwner(commentId) {
@@ -49,7 +49,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     return result.rows[0].owner;
   }
 
-  async getComment({ threadId, commentId }) {
+  async verifyCommentAvailability({ threadId, commentId }) {
     const query = {
       text: `SELECT comments.id,
                     comments.date,
@@ -73,7 +73,7 @@ class CommentRepositoryPostgres extends CommentRepository {
       throw new NotFoundError('comment tidak ditemukan');
     }
 
-    const date = (new Date(result.rows[0].date)).toISOString();
+    const date = result.rows[0].date.toISOString();
 
     return new Comment({
       ...result.rows[0],
@@ -116,19 +116,11 @@ class CommentRepositoryPostgres extends CommentRepository {
     };
 
     const result = await this._pool.query(query);
-    let comments = [];
 
-    for (let i = 0; i < result.rows.length; i++) {
-      const comment = result.rows[i];
-      const date = (new Date(comment.date)).toISOString();
-
-      comments.push(new Comment({
-        ...comment,
-        date,
-      }));
-    }
-
-    return comments;
+    return result.rows.map((comment)=> new Comment({
+      ...comment,
+      date: comment.date.toISOString(),
+    }));
   }
 }
 

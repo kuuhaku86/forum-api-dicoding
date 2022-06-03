@@ -18,7 +18,7 @@ describe('ToggleLikeUseCase', () => {
     const like = new Like(useCasePayload);
 
     /** mocking needed function */
-    mockCommentRepository.getComment = jest.fn(() => Promise.resolve());
+    mockCommentRepository.verifyCommentAvailability = jest.fn(() => Promise.resolve());
     mockLikeRepository.getLike = jest.fn(() => Promise.reject());
     mockLikeRepository.addLike = jest.fn(() => Promise.resolve(new Like({
       commentId:    useCasePayload.commentId,
@@ -33,7 +33,7 @@ describe('ToggleLikeUseCase', () => {
 
     // Action and Assert
     await expect(toggleLikeUseCase.execute(useCasePayload)).resolves.not.toThrowError(Error);
-    expect(mockCommentRepository.getComment).toBeCalledWith(useCasePayload);
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(useCasePayload);
     expect(mockLikeRepository.getLike).toBeCalledWith(like);
     expect(mockLikeRepository.addLike).toBeCalledWith(like);
   });
@@ -52,7 +52,7 @@ describe('ToggleLikeUseCase', () => {
     const like = new Like(useCasePayload);
 
     /** mocking needed function */
-    mockCommentRepository.getComment = jest.fn(() => Promise.resolve());
+    mockCommentRepository.verifyCommentAvailability = jest.fn(() => Promise.resolve());
     mockLikeRepository.getLike = jest.fn(() => Promise.resolve());
     mockLikeRepository.deleteLike = jest.fn(() => Promise.resolve());
 
@@ -64,7 +64,7 @@ describe('ToggleLikeUseCase', () => {
 
     // Action and Assert
     await expect(toggleLikeUseCase.execute(useCasePayload)).resolves.not.toThrowError(Error);
-    expect(mockCommentRepository.getComment).toBeCalledWith(useCasePayload);
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(useCasePayload);
     expect(mockLikeRepository.getLike).toBeCalledWith(like);
     expect(mockLikeRepository.deleteLike).toBeCalledWith(like);
   });

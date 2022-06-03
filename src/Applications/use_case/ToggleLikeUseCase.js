@@ -7,7 +7,7 @@ class ToggleLikeUseCase {
   }
 
   async execute(useCasePayload) {
-    await this._commentRepository.getComment(useCasePayload);
+    await this._commentRepository.verifyCommentAvailability(useCasePayload);
 
     const like = new Like(useCasePayload);
 

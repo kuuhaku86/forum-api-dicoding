@@ -18,15 +18,12 @@ class CommentsHandler {
       ...request.payload,
     });
 
-    const response = h.response({
+    return h.response({
       status: 'success',
       data: {
         addedComment,
       },
-    });
-    response.code(201);
-
-    return response;
+    }).code(201);
   }
 
   async deleteCommentHandler(request, h) {
@@ -38,12 +35,9 @@ class CommentsHandler {
       commentId:   request.params.commentId,
     });
 
-    const response = h.response({
+    return {
       status: 'success',
-    });
-    response.code(200);
-
-    return response;
+    };
   }
 }
 

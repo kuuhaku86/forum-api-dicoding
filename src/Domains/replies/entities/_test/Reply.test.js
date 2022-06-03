@@ -65,6 +65,7 @@ describe('Reply entities', () => {
     expect(reply.id).toEqual(payload.id);
     expect(reply.content).toEqual("**balasan telah dihapus**");
     expect(reply.username).toEqual(payload.username);
+    expect(reply.commentId).toEqual(payload.comment_id);
     expect(reply.date).toEqual(payload.date);
   });
 });

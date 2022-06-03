@@ -49,7 +49,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     return result.rows[0].owner;
   }
 
-  async getReply({ commentId, replyId }) {
+  async verifyReplyAvailability({ commentId, replyId }) {
     const query = {
       text: `SELECT replies.*, 
                     users.username

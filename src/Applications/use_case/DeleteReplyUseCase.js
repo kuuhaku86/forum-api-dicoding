@@ -12,11 +12,11 @@ class DeleteReplyUseCase {
 
     const { credentials, threadId, commentId, replyId } = useCasePayload;
 
-    await this._commentRepository.getComment({
+    await this._commentRepository.verifyCommentAvailability({
       threadId,
       commentId,
     });
-    await this._replyRepository.getReply({
+    await this._replyRepository.verifyReplyAvailability({
       commentId,
       replyId,
     });

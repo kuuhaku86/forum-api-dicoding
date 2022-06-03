@@ -43,7 +43,7 @@ describe('DeleteReplyUseCase', () => {
     };
 
     const mockCommentRepository = new CommentRepository();
-    mockCommentRepository.getComment = jest.fn(() => Promise.reject(new NotFoundError("test")));
+    mockCommentRepository.verifyCommentAvailability = jest.fn(() => Promise.reject(new NotFoundError("test")));
 
     const deleteReplyUseCase = new DeleteReplyUseCase({
       commentRepository: mockCommentRepository,
@@ -81,10 +81,10 @@ describe('DeleteReplyUseCase', () => {
     });
 
     const mockCommentRepository = new CommentRepository();
-    mockCommentRepository.getComment = jest.fn(() => Promise.resolve(comment));
+    mockCommentRepository.verifyCommentAvailability = jest.fn(() => Promise.resolve(comment));
 
     const mockReplyRepository = new ReplyRepository();
-    mockReplyRepository.getReply = jest.fn(() => Promise.resolve(reply));
+    mockReplyRepository.verifyReplyAvailability = jest.fn(() => Promise.resolve(reply));
     mockReplyRepository.getOwner = jest.fn(() => Promise.resolve('testt-123'));
 
     const deleteReplyUseCase = new DeleteReplyUseCase({
@@ -124,10 +124,10 @@ describe('DeleteReplyUseCase', () => {
     });
 
     const mockCommentRepository = new CommentRepository();
-    mockCommentRepository.getComment = jest.fn(() => Promise.resolve(comment));
+    mockCommentRepository.verifyCommentAvailability = jest.fn(() => Promise.resolve(comment));
 
     const mockReplyRepository = new ReplyRepository();
-    mockReplyRepository.getReply = jest.fn(() => Promise.resolve(reply));
+    mockReplyRepository.verifyReplyAvailability = jest.fn(() => Promise.resolve(reply));
     mockReplyRepository.getOwner = jest.fn(() => Promise.resolve(useCasePayload.credentials));
     mockReplyRepository.softDelete = jest.fn(() => Promise.resolve());;
 
@@ -138,12 +138,12 @@ describe('DeleteReplyUseCase', () => {
 
     // Action and Assert
     await expect(deleteReplyUseCase.execute(useCasePayload)).resolves.not.toThrowError(Error);
-    expect(mockCommentRepository.getComment)
+    expect(mockCommentRepository.verifyCommentAvailability)
       .toHaveBeenCalledWith({
         threadId:    useCasePayload.threadId,
         commentId:   useCasePayload.commentId,
       });
-    expect(mockReplyRepository.getReply)
+    expect(mockReplyRepository.verifyReplyAvailability)
       .toHaveBeenCalledWith({
         commentId:   useCasePayload.commentId,
         replyId:     useCasePayload.replyId,

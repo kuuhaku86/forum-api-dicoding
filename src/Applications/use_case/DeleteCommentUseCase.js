@@ -10,7 +10,7 @@ class DeleteCommentUseCase {
 
     const { credentials, threadId, commentId } = useCasePayload;
 
-    await this._commentRepository.getComment({
+    await this._commentRepository.verifyCommentAvailability({
       threadId,
       commentId,
     });

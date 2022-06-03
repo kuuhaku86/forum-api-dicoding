@@ -46,12 +46,12 @@ describe('GetAuthenticationUseCase', () => {
       .toBeCalledWith('dicoding');
     expect(mockPasswordHash.comparePassword)
       .toBeCalledWith('secret', 'encrypted_password');
-    expect(mockUserRepository.getIdByUsername)
-      .toBeCalledWith('dicoding');
     expect(mockAuthenticationTokenManager.createAccessToken)
       .toBeCalledWith({ username: 'dicoding', id: 'user-123' });
     expect(mockAuthenticationTokenManager.createRefreshToken)
       .toBeCalledWith({ username: 'dicoding', id: 'user-123' });
+    expect(mockUserRepository.getIdByUsername)
+      .toBeCalledWith('dicoding');
     expect(mockAuthenticationRepository.addToken)
       .toBeCalledWith(expectedAuthentication.refreshToken);
   });
